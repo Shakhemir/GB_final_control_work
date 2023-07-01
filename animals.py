@@ -7,19 +7,23 @@ class Animal(ABC):
     """
     Родительский класс.
     """
-    def __init__(self, name, birth_date):
-        self.name = name
-        self.birth_date = datetime.strptime(birth_date, '%Y-%m-%d')
-        self.commands = []
 
-    def add_commands(self, *commands):
-        self.commands.extend(commands)
+    def __init__(self, name, date_of_birth):
+        self.name = name
+        self.birth_date: datetime = datetime.strptime(date_of_birth, '%Y-%m-%d') \
+            if isinstance(date_of_birth, str) else date_of_birth
+        self.commands = []
+        self.specie = None
+
+    def add_commands(self, commands):
+        self.commands.extend(map(lambda s: s.strip(), commands))
 
     def act_command(self):
         if self.commands:
             print(choice(self.commands))
 
-class Pets(ABC, Animal):
+
+class Pets(Animal, ABC):
     """
     Домашние животные
     """
@@ -31,7 +35,8 @@ class Pets(ABC, Animal):
         """
         pass
 
-class PackAnimals(ABC, Animal):
+
+class PackAnimals(Animal, ABC):
     """
     Домашние животные
     """
